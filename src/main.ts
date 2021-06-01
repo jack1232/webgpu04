@@ -23,22 +23,22 @@ const CreateTriangle = async () => {
     
     const shader = GlslShaders();
     const pipeline = device.createRenderPipeline({
-        vertexStage: {
+        vertex: {
             module: device.createShaderModule({                    
                 code: glslang.compileGLSL(shader.vertex, 'vertex')
             }),
             entryPoint: "main"
         },
-        fragmentStage: {
+        fragment: {
             module: device.createShaderModule({                    
                 code: glslang.compileGLSL(shader.fragment, 'fragment')
             }),
-            entryPoint: "main"
+            entryPoint: "main",
+            targets: [{
+                format: swapChainFormat as GPUTextureFormat
+            }]
         },
         primitiveTopology: "triangle-list",
-        colorStates: [{
-            format: swapChainFormat
-        }]
     });
 
     const commandEncoder = device.createCommandEncoder();
