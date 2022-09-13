@@ -27,6 +27,7 @@ const CreateTriangle = async () => {
     
     const shader = GlslShaders();
     const pipeline = device.createRenderPipeline({
+        layout: 'auto',
         vertex: {
             module: device.createShaderModule({                    
                 code: glslang.compileGLSL(shader.vertex, 'vertex')
@@ -52,13 +53,14 @@ const CreateTriangle = async () => {
     const renderPass = commandEncoder.beginRenderPass({
         colorAttachments: [{
             view: textureView,
-            loadValue: [0.5, 0.5, 0.8, 1], //background color
+            clearValue: [0.5, 0.5, 0.8, 1], //background color
+            loadOp: 'clear',
             storeOp: 'store'
         }]
     });
     renderPass.setPipeline(pipeline);
     renderPass.draw(3, 1, 0, 0);
-    renderPass.endPass();
+    renderPass.end();
 
     device.queue.submit([commandEncoder.finish()]);
 }
